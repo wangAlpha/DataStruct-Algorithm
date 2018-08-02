@@ -1,4 +1,5 @@
 #include <iostream>
+
 template <typename T, typename Fn> void for_each(T *begin, T *end, Fn fun) {
     for (; begin != end; ++begin) {
         fun(*begin);
