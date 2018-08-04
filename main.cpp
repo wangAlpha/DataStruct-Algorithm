@@ -2,7 +2,7 @@
 #include <iostream>
 
 class Bitmap {
-  private:
+private:
     size_t *_data;
     size_t _size;
     void resize(size_t n) {
@@ -25,7 +25,7 @@ class Bitmap {
         delete[] old_data;
     }
 
-  public:
+public:
     Bitmap(size_t n = 5) {
         _data = nullptr;
         resize((n >> 5) + 1);
@@ -85,7 +85,7 @@ template <typename T, typename Fn> void for_each(T begin, T end, Fn fun) {
 }
 
 template <typename K, typename V> class Hashtable {
-  private:
+private:
     // 哈希桶
     Entry<K, V> **_ht;
     // 桶的容量和已使用大小
@@ -97,7 +97,7 @@ template <typename K, typename V> class Hashtable {
     int primeNT(int c);
     void rehash();
 
-  public:
+public:
     Hashtable();
     ~Hashtable();
 

@@ -3,8 +3,8 @@
 
 #define INIT_CAPACITY 16
 template <typename T> class Stack {
-  private:
-  public:
+private:
+public:
     T *_elem;
     size_t len, capacity;
 

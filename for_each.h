@@ -17,6 +17,7 @@ template <typename T> void swap(T &a, T &b) {
     a = b;
     b = e;
 }
+
 template <typename T> T max(T &a, T &b) {
     if (a > b) {
         return a;

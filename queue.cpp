@@ -10,7 +10,7 @@ class Queue {
     Node *head;
     Node *tail;
 
-  public:
+public:
     Queue() {
         head = new Node;
         tail = new Node;

@@ -1,49 +1,57 @@
 #include "for_each.h"
 #include <cstdio>
-#include <gmpxx.h>
 #include <iostream>
 #include <queue>
 
 const int HEAP_SIZE = 32;
 
 template <class T> class Heap {
-  private:
+private:
     T *_elem;
     int _size, _capacity;
+
     void heap(T *arr, int lo, int hi);
     void percolateUp(int lo, int hi);
-
     void percolateDown(int lo, int hi);
+    void heapify(int n);
+
     void expand();
     bool InHeap(int x) { return (-1 < x && x < _size); }
     int LeftChild(int x) { return (x << 1) + 1; }
     int RightChild(int x) { return (x << 1) + 2; }
     int Parent(int x) { return ((x - 1) >> 1); }
     int ProperParent(int x);
+    bool InternalNode(int x) { return ((x >> 1) - 1) && InHeap(x); }
 
-  public:
+public:
     Heap();
-    Heap(T *arr, int hi) {}
+    Heap(T *arr, int n);
     ~Heap() { delete[] _elem; }
 
     T getMax() { return _elem[0]; }
     T delMax();
     void insert(T const &e);
     size_t size() const { return _size; }
-    void headSort(T) {}
+    void heapSort();
     template <typename Fn> void visit(Fn fun);
 };
-
+// 遍历堆
 template <class T> template <typename Fn> void Heap<T>::visit(Fn fun) {
     for_each(_elem, _elem + _size, fun);
 }
-
+// 构造函数
 template <class T> Heap<T>::Heap() {
     _capacity = HEAP_SIZE;
     _size = 0;
     _elem = new T[_capacity];
 }
-
+template <class T> Heap<T>::Heap(T *arr, int n) {
+    _size = n;
+    _elem = new T[_capacity];
+    copy(_elem, arr, arr + n);
+    heapify(n);
+}
+// 返回节点中的最大节点
 template <class T> int Heap<T>::ProperParent(int x) {
     auto lc = LeftChild(x);
     auto rc = RightChild(x);
@@ -61,7 +69,7 @@ template <class T> int Heap<T>::ProperParent(int x) {
         return x;
     }
 }
-
+// 下滤
 template <class T> void Heap<T>::percolateDown(int lo, int hi) {
     int j;
     auto cur_pos = lo;
@@ -70,7 +78,7 @@ template <class T> void Heap<T>::percolateDown(int lo, int hi) {
         cur_pos = j;
     }
 }
-
+// 上滤
 template <class T> void Heap<T>::percolateUp(int lo, int hi) {
     auto cur_pos = hi - 1;
     while (InHeap(cur_pos)) {
@@ -83,7 +91,13 @@ template <class T> void Heap<T>::percolateUp(int lo, int hi) {
         cur_pos = parent;
     }
 }
-
+template <class T> void Heap<T>::heapify(int n) {
+    for (int i = 1; i < _size && InternalNode(i); ++i) {
+        percolateDown(i, _size);
+    }
+    for_each(_elem, _elem + _size, [&](int *e) { std::cout << *e << ' '; });
+}
+// 扩展
 template <class T> void Heap<T>::expand() {
     auto old_elem = _elem;
     _capacity <<= 1;
@@ -91,7 +105,7 @@ template <class T> void Heap<T>::expand() {
     copy(_elem, old_elem, old_elem + _size);
     delete[] old_elem;
 }
-
+// 插入元素
 template <class T> void Heap<T>::insert(const T &e) {
     _elem[_size++] = e;
     percolateUp(0, _size);
@@ -99,25 +113,29 @@ template <class T> void Heap<T>::insert(const T &e) {
         expand();
     }
 }
-
+// 移除最大值
 template <class T> T Heap<T>::delMax() {
     auto max_elem = _elem[0];
     _elem[0] = _elem[--_size];
     percolateDown(0, _size);
     return max_elem;
 }
+//  堆排序
+template <class T> void Heap<T>::heapSort() {
+    int index = _size - 1;
+    while (index) {
+        _elem[index--] = delMax();
+    }
+}
 
 int main(int argc, char const *argv[]) {
-    Heap<int> heap;
     int array[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-    for_each(array, array + 13, [](int *e) { std::cout << *e << ' '; });
-    std::cout << '\n';
-    for_each(array, array + 13, [&](int *e) { heap.insert(*e); });
-    std::cout << '\n';
-    for (int i = 0; i < 13; ++i) {
-        std::cout << heap.getMax() << ' ';
-        heap.delMax();
+    Heap<> heap(array, 13);
+    int n;
+    scanf("%d", &n);
+    for (int i = 0; i < n; ++i) {
+        int word;
+        // heap.insert()
     }
-    std::cout << '\n';
     return 0;
 }

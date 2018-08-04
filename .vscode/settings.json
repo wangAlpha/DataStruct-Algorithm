@@ -11,6 +11,10 @@
         "new": "cpp",
         "stdexcept": "cpp",
         "typeinfo": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "__locale": "cpp",
+        "__tree": "cpp",
+        "locale": "cpp",
+        "thread": "cpp"
     }
 }
