@@ -15,6 +15,10 @@
         "__locale": "cpp",
         "__tree": "cpp",
         "locale": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "deque": "cpp",
+        "vector": "cpp",
+        "ios": "cpp",
+        "__split_buffer": "cpp"
     }
 }
