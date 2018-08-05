@@ -12,16 +12,17 @@ private:
 
 public:
     DisjointSet(int n) {
-        _size = n + 1;
+        _size = n;
         id = new int[_size];
         _sz = new int[_size];
-        for (int i = 0; i <= _size; ++i) {
+        for (int i = 0; i < _size; ++i) {
             id[i] = i;
             _sz[i] = 1;
         }
     }
     // 查询数值是否包含在这个集合中
     int find(int p) {
+        p = p % 4000003;
         while (p != id[p]) {
             id[p] = id[id[p]];
             p = id[p];
@@ -73,7 +74,7 @@ public:
 int main(int argc, char const *argv[]) {
     int n, m;
     scanf("%d%d", &n, &m);
-    DisjointSet set(200001);
+    DisjointSet set(4000003);
     Vector<int> v1(n);
     Vector<int> v2(n);
     Vector<int> vec(n);
@@ -85,7 +86,8 @@ int main(int argc, char const *argv[]) {
     }
 
     for (int i = m - 1; i >= 0; --i) {
-        if (set.join(v1.pop_back(), v2.pop_back()) == true) {
+        auto result = set.join(v1.pop_back(), v2.pop_back());
+        if (result == true) {
             vec.push_back(i + 1);
         }
     }

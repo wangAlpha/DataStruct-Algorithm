@@ -19,6 +19,7 @@
         "deque": "cpp",
         "vector": "cpp",
         "ios": "cpp",
-        "__split_buffer": "cpp"
+        "__split_buffer": "cpp",
+        "random": "cpp"
     }
 }

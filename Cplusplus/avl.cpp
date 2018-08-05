@@ -1,12 +1,7 @@
+#include <algorithm>
 #include <cstdio>
 #include <iostream>
-
 #define _DEBUG
-template <typename T> void swap(T &a, T &b) {
-    T e = a;
-    a = b;
-    b = e;
-}
 
 template <typename T> class Vector {
     T *_elem;
@@ -33,9 +28,11 @@ template <typename T> struct BinNode {
     int count;
     BinNode *left;
     BinNode *right;
+    BinNode *parent;
     BinNode() {}
-    BinNode(T const &e, BinNode<T> *lc = nullptr, BinNode<T> *rc = nullptr)
-        : data(e), count(1), left(lc), right(rc) {}
+    BinNode(T const &e, BinNode<T> *lc = nullptr, BinNode<T> *rc = nullptr,
+            BinNode<T> *p = nullptr)
+        : data(e), count(1), left(lc), right(rc), parent(p) {}
 };
 
 template <typename T> class BST {
@@ -75,15 +72,17 @@ public:
         }
         if (hot->data > e) {
             ++_size;
-            return (hot->left = new BinNode<T>(e));
+            hot->left = new BinNode<T>(e);
+            hot->left->parent = hot;
         } else if (hot->data < e) {
             ++_size;
-            return (hot->right = new BinNode<T>(e));
+            hot->right = new BinNode<T>(e);
+            hot->right->parent = hot;
         } else {
             // 重复元素
             hot->count++;
-            return hot;
         }
+        return hot;
     }
 
     // 直接后继
@@ -94,6 +93,7 @@ public:
         }
         return root;
     }
+
     // 移除节点
     bool remove(T const &e) {
         auto hot = search(e);
@@ -108,20 +108,21 @@ public:
                 if (hot->left) {
                     auto node = hot;
                     hot = hot->left;
-                    release(node);
+                    delete node;
                 } else if (hot->right) {
                     auto node = hot;
                     hot = hot->right;
-                    release(node);
+                    delete node;
                 } else {
                     auto node = succ(hot);
-                    swap(node->data, hot->data);
+                    std::swap(node->data, hot->data);
                     if (node->right) {
                         auto p = node;
                         node = node->right;
-                        release(p);
+                        delete node;
                     } else {
-                        release(node);
+                        BinNode<T> **node = &(hot->parent);
+                        (*node)->left = nullptr;
                     }
                 }
             }
@@ -135,37 +136,17 @@ public:
         if (!_root) {
             return _root;
         }
-        auto node = _root;
-        if (_root->data == e) {
-            return nullptr;
-        } else if (_root->data > e) {
-            node = _root->left;
-        } else if (_root->data < e) {
-            node = _root->right;
+        auto node = search(e);
+        if (node->data >= e) {
+            if (node->left) {
+                return node->left;
+            } else if (node->parent) {
+                return node->parent;
+            }
+        } else {
+            return node->parent;
         }
-        Vector<BinNode<T> *> s((int)_size);
-        BinNode<T> *last = nullptr;
-        BinNode<T> *llast = nullptr;
-        while (true) {
-            while (node) {
-                s.push_back(node);
-                node = node->left;
-            }
-            if (s.empty()) {
-                return last;
-            }
-            node = s.pop_back();
-            llast = node;
-            if (node->data >= e) {
-                return last;
-            } else if (node->data > e) {
-                return last;
-            }
-            last = node;
-            node = node->right;
-        }
-
-        return llast;
+        return (node->data > e) ? node->parent : node->left;
     }
 
     // 返回最小值
@@ -218,8 +199,10 @@ private:
     BinNode<T> *_root;
     size_t _size;
     void release(BinNode<T> *root) {
-        delete root;
-        root = nullptr;
+        if (root->parent != nullptr) {
+            auto node = root->parent;
+            delete root;
+        }
     }
 };
 
