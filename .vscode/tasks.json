@@ -6,7 +6,7 @@
             "command": "clang++",
             "args": [
                 "${file}", //指定编译源代码文件                    
-                "-o ${fileDirname}/${fileBasenameNoExtension}", // 指定输出文件名，不加该参数则默认输出a.exe
+                "-o ${fileBasenameNoExtension}", // 指定输出文件名，不加该参数则默认输出a.exe
                 "-ggdb3", // 生成和调试有关的信息
                 "-Wall", // 开启额外警告
                 "-std=c++14", // 使用最新的c++17标准

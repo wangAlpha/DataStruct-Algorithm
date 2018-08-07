@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <iostream>
 
+// 查找一个数组的第k大小的数字
 void quickSelect(int arr[], int lo, int hi, int k) {
     for (int lo = 0; lo < hi; ++lo) {
         int i = lo, j = hi;

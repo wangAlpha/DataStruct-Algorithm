@@ -1,4 +1,8 @@
+#include <cstdio>
 #include <iostream>
+
+// 列车调度问题
+// https://dsa.cs.tsinghua.edu.cn/oj/problem.shtml?id=1145
 
 const auto STACK_SIZE = 1024;
 template <typename T> class Stack {
@@ -48,7 +52,7 @@ public:
             fun(_elem[i]);
         }
     }
-    T &index(size_t const n) { return _elem[n - 1]; }
+    T &index(size_t const n) { return _elem[n]; }
 };
 
 int main(int argc, char const *argv[]) {
@@ -63,8 +67,10 @@ int main(int argc, char const *argv[]) {
     int seq = 0;
     for (int i = 1; i <= n; ++i) {
         s.push(i);
+        record.push(true);
         while (s.top() == train[seq] && seq < n) {
             s.pop();
+            record.push(false);
             ++seq;
         }
         if (s.size() > m) {
@@ -72,9 +78,11 @@ int main(int argc, char const *argv[]) {
         }
     }
     if (s.empty()) {
-        std::cout << "YES" << std::endl;
+        for (int i = 0; i < record.size(); ++i) {
+            printf("%s\n", record.index(i) ? "push" : "pop");
+        }
     } else {
-        std::cout << "No" << std::endl;
+        printf("No\n");
     }
     return 0;
 }

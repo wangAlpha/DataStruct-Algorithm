@@ -20,6 +20,10 @@
         "vector": "cpp",
         "ios": "cpp",
         "__split_buffer": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "cfenv": "cpp",
+        "charconv": "cpp",
+        "cuchar": "cpp",
+        "list": "cpp"
     }
 }

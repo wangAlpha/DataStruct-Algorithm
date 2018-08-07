@@ -1,0 +1,54 @@
+#include <iostream>
+#include <memory>
+
+bool check(size_t const &d, int const &n, int const &m, int const number[]) {
+    int64_t sum = 0;
+    int cnt = 1;
+
+    for (int i = 0; i < n; ++i) {
+        if (number[i] > d) {
+            return false;
+        }
+        sum += number[i];
+        if (sum >= d) {
+            sum = number[i];
+            cnt += 1;
+        }
+        if (cnt > m + 1) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int64_t getAnswer(int const numbers[], int const &n, int const &m) {
+    int64_t lo = 1, hi = 0;
+    for (int i = 0; i < n; ++i) {
+        hi += numbers[i];
+    }
+
+    while (lo < hi) {
+        size_t const mid = (lo + hi) >> 1;
+        if (check(mid, n, m, numbers)) {
+            hi = mid - 1;
+        } else {
+            lo = mid + 1;
+        }
+    }
+
+    return hi + 1;
+}
+
+int main(int argc, char const *argv[]) {
+    int n, m;
+    std::cin >> n >> m;
+    auto numbers = new int[n];
+    for (int i = 0; i < n; ++i) {
+        // scanf("%d", &numbers[i]);
+        std::cin >> numbers[i];
+    }
+    // printf("%lld\n", getAnswer(numbers, n, m));
+    std::cout << getAnswer(numbers, n, m) << std::endl;
+    delete[] numbers;
+    return 0;
+}
