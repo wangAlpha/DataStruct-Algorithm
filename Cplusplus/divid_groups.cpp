@@ -1,7 +1,8 @@
 #include <iostream>
-#include <memory>
+#include <cstdio>
 
-bool check(size_t const &d, int const &n, int const &m, int const number[]) {
+
+bool check(int64_t const &d, int const &n, int const &m, int const number[]) {
     int64_t sum = 0;
     int cnt = 1;
 
@@ -10,15 +11,13 @@ bool check(size_t const &d, int const &n, int const &m, int const number[]) {
             return false;
         }
         sum += number[i];
-        if (sum >= d) {
+        if (sum > d) {
             sum = number[i];
             cnt += 1;
         }
-        if (cnt > m + 1) {
-            return false;
-        }
     }
-    return true;
+
+    return cnt <= m;
 }
 
 int64_t getAnswer(int const numbers[], int const &n, int const &m) {
@@ -28,7 +27,7 @@ int64_t getAnswer(int const numbers[], int const &n, int const &m) {
     }
 
     while (lo < hi) {
-        size_t const mid = (lo + hi) >> 1;
+        int64_t const mid = (lo + hi) >> 1;
         if (check(mid, n, m, numbers)) {
             hi = mid - 1;
         } else {
@@ -44,10 +43,8 @@ int main(int argc, char const *argv[]) {
     std::cin >> n >> m;
     auto numbers = new int[n];
     for (int i = 0; i < n; ++i) {
-        // scanf("%d", &numbers[i]);
         std::cin >> numbers[i];
     }
-    // printf("%lld\n", getAnswer(numbers, n, m));
     std::cout << getAnswer(numbers, n, m) << std::endl;
     delete[] numbers;
     return 0;

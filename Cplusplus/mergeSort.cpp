@@ -18,6 +18,7 @@ template <typename T> int parition(T arr[], int lo, int hi) {
     return lo;
 }
 
+int64_t count = 0;
 template <typename T> void quickSort(T arr[], int lo, int hi) {
     if (hi - lo < 2) {
         return;
@@ -26,6 +27,7 @@ template <typename T> void quickSort(T arr[], int lo, int hi) {
     quickSort(arr, lo, mi);
     quickSort(arr, mi + 1, hi);
 }
+
 template <typename T> void merge(T arr[], int lo, int mi, int hi) {
     int lb = mi - lo;
     auto B = new T[lb];
@@ -42,6 +44,7 @@ template <typename T> void merge(T arr[], int lo, int mi, int hi) {
         if ((j < lc) && (!(i < lb) || (C[j] < B[i]))) {
             arr[lo++] = C[j++];
         }
+			++count;
     }
     delete[] B;
 }
@@ -66,10 +69,11 @@ int main(int argc, char const *argv[]) {
     }
     mergeSort(arr, 0, n);
     // quickSort()
-    for (int i = 0; i < n; ++i) {
-        printf("%d ", arr[i]);
-    }
-    std::cout << std::endl;
+//    for (int i = 0; i < n; ++i) {
+//        printf("%d ", arr[i]);
+//    }
+//    std::cout << std::endl;
+	std::cout << count << std::endl;
     delete[] arr;
     return 0;
 }
