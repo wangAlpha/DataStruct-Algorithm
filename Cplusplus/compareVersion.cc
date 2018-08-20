@@ -2,11 +2,11 @@
 #include <cstring>
 #include <iostream>
 
-bool IsSmallAlpha(const char ch) const { return ch >= 'a' && ch <= 'z'; }
-bool IsDigit(const char ch) const { return ch >= '0' && ch <= '9'; }
+static bool IsSmallAlpha(const char ch) { return ch >= 'a' && ch <= 'z'; }
+static bool IsDigit(const char ch) { return ch >= '0' && ch <= '9'; }
 
 // 字符串转权制
-int CharToWeight(const char ch) {
+static int CharToWeight(const char ch) {
   if (IsSmallAlpha(ch)) {
     return ch - 'a';
   } else if (IsDigit(ch)) {
@@ -17,7 +17,7 @@ int CharToWeight(const char ch) {
 
 // 输入版本号合法检测
 // Return -1: 非法 0: 合法
-int ErrCheckVersion(const char *version) {
+static int ErrCheckVersion(const char *version) {
   if (version == nullptr) {
     return -1;
   }
